@@ -1,4 +1,5 @@
 #---------------------------------link to database--------------------------------------------
+from database import get_tables
 from llama_index.core import SQLDatabase
 from sqlalchemy import (
     create_engine,
@@ -11,19 +12,19 @@ from sqlalchemy import (
     column,
 )
 
-engine = create_engine("sqlite:///chinook.db")
+engine = create_engine("sqlite:///mi_base_de_datos.db") #object that represent the connection to the database.
 sql_database = SQLDatabase(engine)
 from llama_index.core.query_pipeline import QueryPipeline
 #----------------------------------------Setup Text-to-SQL Query Engine / Tool-------------------------------------
 from llama_index.core.query_engine import NLSQLTableQueryEngine
 from llama_index.core.tools import QueryEngineTool
 
-sql_query_engine = NLSQLTableQueryEngine(
+sql_query_engine = NLSQLTableQueryEngine( # object that translate querys of natural languages to SQL querys
     sql_database=sql_database,
-    tables=["albums", "tracks", "artists"],
+    tables=get_tables(),
     verbose=True,
 )
-sql_tool = QueryEngineTool.from_defaults(
+sql_tool = QueryEngineTool.from_defaults( # object for interact with the query engine
     query_engine=sql_query_engine,
     name="sql_tool",
     description=(

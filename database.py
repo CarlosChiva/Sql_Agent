@@ -38,23 +38,25 @@ except sqlite3.IntegrityError as e:
 
 # Cerrar la conexión a la base de datos
 con.close()
-con = sqlite3.connect('mi_base_de_datos.db')
-# Crea un cursor para ejecutar las consultas
-cur = con.cursor()
 
-# Consulta que devuelve el nombre de todas las tablas
-cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
+def get_tables():
+    con = sqlite3.connect('mi_base_de_datos.db')
+    # Crea un cursor para ejecutar las consultas
+    cur = con.cursor()
 
-# Obtiene los resultados
-tablas = cur.fetchall()
+    # Consulta que devuelve el nombre de todas las tablas
+    cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
 
-# Cierra la conexión a la base de datos
-con.close()
+    # Obtiene los resultados
+    tablas = cur.fetchall()
 
-table_list=[]
-# Imprime el nombre de cada tabla
-for tabla in tablas:
-    table_list.append(tabla[0])
+    # Cierra la conexión a la base de datos
+    con.close()
 
-print(table_list)    
+    table_list=[]
+    # Imprime el nombre de cada tabla
+    for tabla in tablas:
+        table_list.append(tabla[0])
+    return table_list
+
 
